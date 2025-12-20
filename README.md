@@ -53,7 +53,7 @@ Beyond basic execution, the shell implements advanced features including:
 		- `name` : change to the given relative or absolute path.
     -Prints `No such directory!` on failure.
 
--reveal:
+- reveal:
     - Syntax: `reveal (-(a | l)*)* (~ | . | .. | - | name)?`
 	- Behavior:
 		- Flags:
@@ -64,7 +64,7 @@ Beyond basic execution, the shell implements advanced features including:
 		- If more than one non-flag argument is passed, prints `reveal: Invalid Syntax!`.
 	-Prints `reveal: Invalid Syntax!` for invalid usage and `No such directory!` if path missing.
 
-- log:
+- log :
  <!-- persistent history (up to 15 entries). `log` to view, `log purge` to clear, `log execute <index>` to run an entry; prints `log: Invalid Syntax!` on bad usage. -->
     - Syntax: `log (purge | execute <index>)?`
 	- Behavior:
