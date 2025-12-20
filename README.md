@@ -65,7 +65,6 @@ Beyond basic execution, the shell implements advanced features including:
 	-Prints `reveal: Invalid Syntax!` for invalid usage and `No such directory!` if path missing.
 
 - log :
- <!-- persistent history (up to 15 entries). `log` to view, `log purge` to clear, `log execute <index>` to run an entry; prints `log: Invalid Syntax!` on bad usage. -->
     - Syntax: `log (purge | execute <index>)?`
 	- Behavior:
 		- Maintains a persistent history file (e.g., `.shell_log` in the `shell/` directory).
