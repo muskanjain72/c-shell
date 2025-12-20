@@ -89,14 +89,13 @@ Beyond basic execution, the shell implements advanced features including:
 ---
 
 ### 🔹 Sequential (`;`) and Background (`&`) Execution
-<!-- - `;` — run commands sequentially (shell waits for each to finish). -->
--Sequential ';':
+- Sequential ';':
     - The parser breaks the input into `cmd_group`s separated by `;` and executes them in order.
 	- The shell waits for each `cmd_group` (full pipeline) to finish before starting the next one.
 	- The shell prompt is shown only after all commands in the sequence have finished.
     
 - Background `&` :
-    run a command in background; 
+    - run a command in background; 
     shell prints `[job_number] pid` and immediately returns the prompt. 
     - The shell periodically (before parsing each new input) checks for completed background jobs using `waitpid(..., WNOHANG)` and reports
 		- `command_name with pid process_id exited normally` or
@@ -107,21 +106,23 @@ Beyond basic execution, the shell implements advanced features including:
 
 ### 🔹 Job Control & Signals
 - `activities`: 
-<!-- list shell-spawned jobs with status `Running` or `Stopped` (format: `[pid] : command_name - State`). -->
+
     - Prints currently tracked child processes (running or stopped) in the format:
 		- `[pid] : command_name - State` where State is `Running` or `Stopped`.
 	- The list is kept up-to-date: terminated processes are removed when noticed via `waitpid()`.
 
 - `ping <pid> <signal>`: 
-    -send `signal % 32` to a process;
+    - send `signal % 32` to a process;
     - prints `No such process found` or `Invalid syntax!` for errors.
     - On success prints `Sent signal <signal_number> to process with pid <pid>`.
 
 - `fg [job_number]` / `bg [job_number]`: 
-<!-- bring jobs to foreground or resume them in background; prints appropriate messages for missing/invalid jobs or already-running jobs. -->
-    - fg [job_number]: brings a background or stopped job to foreground. If the job is stopped it sends `SIGCONT` and then waits for it to finish or stop again. If no job number is provided the newest job is used. If missing, prints `No such job`.
+
+    - fg [job_number]: brings a background or stopped job to foreground. If the job is stopped it sends `SIGCONT` and then waits for it to finish or stop again.
+    - If no job number is provided the newest job is used. If missing, prints `No such job`.
 	
-    - bg [job_number]: resumes a stopped background job by sending `SIGCONT`. Prints `[job_number] command_name &` on success. If the job is running prints `Job already running`. If number invalid prints `No such job`.
+    - bg [job_number]: resumes a stopped background job by sending `SIGCONT`. Prints `[job_number] command_name &` on success.
+    - If the job is running prints `Job already running`. If number invalid prints `No such job`.
 
 - Ctrl-C (SIGINT): forwarded to foreground jobs; the shell itself continues running.
 
