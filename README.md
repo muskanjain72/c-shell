@@ -88,7 +88,7 @@ Beyond basic execution, the shell implements advanced features including:
 ---
 
 ### 🔹 Sequential (`;`) and Background (`&`) Execution
-- Sequential ';':
+- Sequential `;`:
     - The parser breaks the input into `cmd_group`s separated by `;` and executes them in order.
 	- The shell waits for each `cmd_group` (full pipeline) to finish before starting the next one.
 	- If a command fails to execute, the shell continue executing the subsequent commands.
