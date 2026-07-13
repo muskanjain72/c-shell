@@ -1,15 +1,15 @@
-sleep 1 &
-echo trigger
+cat < file1.txt < file2.txt
+echo 'last output' > out1.txt > out2.txt
+hop .. > out.txt
+reveal -la
+reveal -a
+cd 
+cd ..
+hop ..
+quit
+ls | ./test_pipeline
+sleep 2 &
+sleep 10 &
 activities
-bg 8
-fg 8
-sleep 5
-echo test_cmd
-echo cmd1
-echo cmd2
-echo cmd1
-echo unique_cmd
-echo first
-echo second
-cat .test/pipe_exec
-wc -c
+ping 99999 9
+exit
