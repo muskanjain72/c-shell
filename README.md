@@ -1,5 +1,5 @@
 
-# 🐚 Custom Unix Shell in C
+# Custom Unix Shell in C
 
 ## 📖 Introduction
 
@@ -61,8 +61,7 @@ Beyond basic execution, the shell implements advanced features including:
 			- `-l`: list entries one-per-line
 			- Combined `-al` or multiple repeated flags are supported (order-insensitive).
 		- Argument handling mirrors `hop`: `~`, `.`, `..`, `-`, or a path `name`. If omitted, defaults to current directory.
-		- If more than one non-flag argument is passed, prints `reveal: Invalid Syntax!`.
-	-Prints `reveal: Invalid Syntax!` for invalid usage and `No such directory!` if path missing.
+		- If more than one non-flag argument is passed, prints `reveal: Invalid Syntax!` and `No such directory!` if path missing.
 
 - log :
     - Syntax: `log (purge | execute <index>)?`
@@ -71,8 +70,8 @@ Beyond basic execution, the shell implements advanced features including:
 		- Stores up to 15 most recent shell_cmd strings (oldest overwritten when full).
 		- `log` (no args): prints stored commands oldest-to-newest.
 		- `log purge`: clears the history file and in-memory buffer.
-		- `log execute <index>`: executes the command at the given index (one-indexed, index relative to the most-recent-first ordering). The executed command is not stored again in history.
-	- On syntax errors prints `log: Invalid Syntax!`.
+		- `log execute <index>`: Executes the command at the specified one-indexed position in the history, where index 1 refers to the most recent command.The executed command is not stored again in history.
+		- On syntax errors prints `log: Invalid Syntax!`.
 
 ---
 
@@ -92,7 +91,9 @@ Beyond basic execution, the shell implements advanced features including:
 - Sequential ';':
     - The parser breaks the input into `cmd_group`s separated by `;` and executes them in order.
 	- The shell waits for each `cmd_group` (full pipeline) to finish before starting the next one.
+	- If a command fails to execute, the shell continue executing the subsequent commands.
 	- The shell prompt is shown only after all commands in the sequence have finished.
+
     
 - Background `&` :
     - run a command in background; 
@@ -100,7 +101,6 @@ Beyond basic execution, the shell implements advanced features including:
     - The shell periodically (before parsing each new input) checks for completed background jobs using `waitpid(..., WNOHANG)` and reports
 		- `command_name with pid process_id exited normally` or
 		- `command_name with pid process_id exited abnormally`
-    - The shell reports background job completion (normal/abnormal) before processing the next input.
 
 ---
 
@@ -128,7 +128,7 @@ Beyond basic execution, the shell implements advanced features including:
 
 - Ctrl-Z (SIGTSTP): stops foreground job, moves it to job list as `Stopped`, and prints job info.
 
-- Ctrl-D (EOF): prints `logout`, sends `SIGKILL` to child processes, and exits with status 0.
+- Ctrl-D (EOF): prints `logout`, sends `SIGKILL` to child processes, and shell exits with status 0.
 
 ---
 
@@ -220,16 +220,5 @@ You should now see the custom shell prompt:
 ```
 
 The shell is now ready to accept commands.
-
----
-
-## 🧠 Learning Outcomes
-- Understanding Unix shell internals
-- Process creation and management using `fork`, `wait`, and `exec`
-- File descriptor manipulation using `dup2` and `open`
-- Inter-process communication using pipes
-- Signal handling and job control
-- Designing modular, maintainable C programs
-- Modular C design
 
 ---
