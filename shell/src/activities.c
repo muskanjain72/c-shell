@@ -108,7 +108,7 @@ void list_activities() {
 void kill_all_processes() {
     Process *curr = head;
     while (curr) {
-        kill(curr->pid, SIGKILL);
+        kill(-curr->pid, SIGKILL);
         curr = curr->next;
     }
 }

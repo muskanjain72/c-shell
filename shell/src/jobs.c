@@ -53,12 +53,16 @@ void execute_fg(char **tokens) {
     pid_t pgid = job->pid;
     char cmd_name[256];
     strcpy(cmd_name, job->command);
+    ProcessState state = job->state;
 
     printf("%s\n", cmd_name);
+
+    // Remove from background list as it is now in the foreground
+    remove_process(pgid);
     
     tcsetpgrp(STDIN_FILENO, pgid);
 
-    if (job->state == STOPPED) {
+    if (state == STOPPED) {
         if (kill(-pgid, SIGCONT) < 0) {
             perror("fg: kill (SIGCONT)");
             tcsetpgrp(STDIN_FILENO, shell_pgid);
@@ -67,7 +71,6 @@ void execute_fg(char **tokens) {
     }
     
     fg_wait(pgid, cmd_name);
-    remove_process(pgid);
     tcsetpgrp(STDIN_FILENO, shell_pgid);
 }
 
