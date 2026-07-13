@@ -26,7 +26,7 @@ int main(void)
     init_signal_handlers();
 
     
-    pid_t shell_pgid = getpid();
+    shell_pgid = getpid();
     if (tcsetpgrp(STDIN_FILENO, shell_pgid) < 0)
     {
         perror("tcsetpgrp");

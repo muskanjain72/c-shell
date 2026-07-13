@@ -146,7 +146,9 @@ void execute_pipeline(char **tokens, int is_background) {
 
     if (!is_background) {
         // For foreground jobs, wait for the entire pipeline to complete or stop.
+        tcsetpgrp(STDIN_FILENO, pgid);
         fg_wait(pgid, tokens[cmd_starts[0]]);
+        tcsetpgrp(STDIN_FILENO, shell_pgid);
     } else {
         // For background, register the job and print its info
         int job_id = add_process(pgid, tokens[cmd_starts[0]], RUNNING);
