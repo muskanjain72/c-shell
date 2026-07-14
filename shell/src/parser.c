@@ -166,19 +166,22 @@ int parse_cmd_group(Parser *p)
     return 1;
 }
 
-// Grammar: shell_cmd -> cmd_group ((& | ;) cmd_group)* &?
+// Grammar: shell_cmd -> cmd_group (('&' | ';') cmd_group)* '&'?
 int parse_shell_cmd(Parser *p)
 {
     if (!parse_cmd_group(p)) return 0;
 
     while (p->pos < p->count) {
-        if (isMatch(p, "&") || isMatch(p, ";")) {
-            consume_token(p, "&") ;
-            consume_token(p, ";");
-            if (p->pos == p->count) break; // Trailing & or ; is allowed
+        if (isMatch(p, ";")) {
+            p->pos++; // consume ';'
+            if (p->pos == p->count) break; // trailing ';' is allowed
+            if (!parse_cmd_group(p)) return 0;
+        } else if (isMatch(p, "&")) {
+            p->pos++; // consume '&'
+            if (p->pos == p->count) break; // trailing '&' (the '&?' at the end)
             if (!parse_cmd_group(p)) return 0;
         } else {
-            break; // Not a separator, so end of shell_cmd
+            break; // leftover tokens — will fail the pos != count check
         }
     }
     return 1;

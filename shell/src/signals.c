@@ -11,6 +11,8 @@ void init_signal_handlers() {
     // The terminal will send them to the foreground child process, not the shell.
     signal(SIGINT, SIG_IGN);
     signal(SIGTSTP, SIG_IGN);
+    signal(SIGTTOU, SIG_IGN);
+    signal(SIGTTIN, SIG_IGN);
 }
 
 // Handles the EOF (Ctrl-D) condition
