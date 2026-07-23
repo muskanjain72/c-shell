@@ -1,5 +1,4 @@
 #include "headers.h"
-// ############## LLM Generated Code Begins ##############
 // Forward declarations
 int parse_flags(char **tokens, int *show_hidden, int *line_by_line, int *path_index);
 int reveal_directory(const char *path, int show_hidden, int line_by_line);
@@ -152,4 +151,3 @@ int parse_flags(char **tokens, int *show_hidden, int *line_by_line, int *path_in
     }
     return 1;
 }
-// ############## LLM Generated Code Ends ################

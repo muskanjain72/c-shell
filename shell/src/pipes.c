@@ -1,5 +1,4 @@
 
-// ############## LLM Generated Code Begins ##############
 #include "headers.h"
 #include "execution.h"
 #include "activities.h"
@@ -147,8 +146,9 @@ void execute_pipeline(char **tokens, int is_background) {
     if (!is_background) {
         // For foreground jobs, wait for the entire pipeline to complete or stop.
         tcsetpgrp(STDIN_FILENO, pgid);
+        // forward all signals to this group
         fg_wait(pgid, tokens[cmd_starts[0]]);
-        tcsetpgrp(STDIN_FILENO, shell_pgid);
+        tcsetpgrp(STDIN_FILENO, shell_pgid); //restore it back to shell
     } else {
         // For background, register the job and print its info
         int job_id = add_process(pgid, tokens[cmd_starts[0]], RUNNING);
@@ -157,4 +157,3 @@ void execute_pipeline(char **tokens, int is_background) {
         }
     }
 }
-// ############## LLM Generated Code Ends ################

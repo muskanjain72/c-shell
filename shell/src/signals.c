@@ -1,6 +1,5 @@
 #include "headers.h"
 #include "activities.h"
-// ############## LLM Generated Code Begins ##############
 // Global variables for tracking the foreground process and shell's PGID
 pid_t fg_pgid = -1;
 char fg_command[256] = "";
@@ -13,6 +12,11 @@ void init_signal_handlers() {
     signal(SIGTSTP, SIG_IGN);
     signal(SIGTTOU, SIG_IGN);
     signal(SIGTTIN, SIG_IGN);
+    //if any of the signal occurs, the shell will ignore them
+    //sigint -> interrupt : ctrl c
+    //sigtstp -> stop : ctrl z
+    //sigtto -> tty output : ctrl + o
+    //sigtstin -> tty input : ctrl + i
 }
 
 // Handles the EOF (Ctrl-D) condition
@@ -48,4 +52,3 @@ void fg_wait(pid_t pgid, const char *cmd_name) {
     fg_pgid = -1;
     fg_command[0] = '\0';
 }
-// ############## LLM Generated Code Ends ################

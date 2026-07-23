@@ -1,11 +1,10 @@
-// ############## LLM Generated Code Begins ##############
 #include "headers.h"
 
 extern char home_dir[MAX_PATH];
 extern char current_dir[MAX_PATH];
 extern char previous_dir[MAX_PATH];
 extern int has_previous;
-
+//since variables are defined in any othe file, we need 'extern' to access them
 void hopToHome();
 void hopToParent();
 void hopToPrevious();
@@ -13,13 +12,13 @@ void hopToPath(char *path);
 void print_error(const char *dir);
 
 int execute_hop(char **tokens) {
-    char old_cwd[MAX_PATH];
+    char old_cwd[MAX_PATH]; //stores the curr directory before changing to new one
     if (getcwd(old_cwd, sizeof(old_cwd)) == NULL) {
         perror("getcwd failed");
         return 0;
     }
 
-    int chdir_success = 0; // Flag to indicate if any chdir was successful
+    int chdir_success = 0; //flag to indicate if any chdir was successful
 
     if (tokens[1] == NULL) {
         if (chdir(home_dir) == 0) chdir_success = 1;
@@ -30,7 +29,7 @@ int execute_hop(char **tokens) {
                 if (chdir(home_dir) == 0) chdir_success = 1;
                 else print_error(home_dir);
             } else if (strcmp(tokens[i], ".") == 0) {
-                // Do nothing, already in current directory
+                //do nothing, already in current directory
             } else if (strcmp(tokens[i], "..") == 0) {
                 if (chdir("..") == 0) chdir_success = 1;
                 else print_error("..");
@@ -48,7 +47,7 @@ int execute_hop(char **tokens) {
         }
     }
 
-    // If any chdir was successful and the current directory is actually different from old_cwd
+    //if any chdir was successful and the current directory is actually different from old_cwd
     char new_cwd[MAX_PATH];
     if (getcwd(new_cwd, sizeof(new_cwd)) == NULL) {
         perror("getcwd update failed");
@@ -57,10 +56,10 @@ int execute_hop(char **tokens) {
 
     if (chdir_success && strcmp(old_cwd, new_cwd) != 0) {
         strcpy(previous_dir, old_cwd);
-        has_previous = 1;
+        has_previous = 1; //make flag as true to indicate that there is previous directory
     }
 
-    strcpy(current_dir, new_cwd); // Always update current_dir to reflect actual CWD
+    strcpy(current_dir, new_cwd); //update current directory to reflect actual CWD
 
     return 1;
 }
@@ -94,11 +93,11 @@ void hopToPath(char *path) {
 }
 
 void print_error(const char *dir) {
-    if (errno == ENOENT) {
+    if (errno == ENOENT) { //error no stores the error code
+        // no directory exists
         printf("No such directory!\n");
     } else {
-        // Other errors like permission denied
+        // other errors like permission denied
         perror("hop");
     }
 }
-// ############## LLM Generated Code Ends ################

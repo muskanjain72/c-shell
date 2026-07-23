@@ -1,4 +1,3 @@
-// ############## LLM Generated Code Begins ##############
 #include "headers.h"
 
 char *takeInputFromUser() {
@@ -7,6 +6,7 @@ char *takeInputFromUser() {
     size_t len = 0;
     ssize_t a = getline(&text, &len, stdin);
 
+    // If getline returns -1, it means EOF (Ctrl+D) was encountered or an error occurred.
     if (a == -1) {
         free(text);
         return NULL;
@@ -18,4 +18,3 @@ char *takeInputFromUser() {
     }
     return text;
 }
-// ############## LLM Generated Code Ends ################

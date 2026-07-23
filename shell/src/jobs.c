@@ -1,6 +1,5 @@
 
 
-// ############## LLM Generated Code Begins ##############
 #include "headers.h"
 #include "activities.h"
 #include "signal.h" // For fg_wait and shell_pgid
@@ -38,6 +37,7 @@ void execute_fg(char **tokens) {
     } else {
         char *endptr;
         long job_num = strtol(tokens[1], &endptr, 10);
+        //strtol because it detects invalid inputs as well which atoi cant
         if (*endptr != '\0') {
             printf("fg: invalid job number\n");
             return;
@@ -46,31 +46,37 @@ void execute_fg(char **tokens) {
     }
 
     if (job == NULL) {
+        //job not found
         printf("No such job\n");
         return;
     }
 
-    pid_t pgid = job->pid;
-    char cmd_name[256];
-    strcpy(cmd_name, job->command);
-    ProcessState state = job->state;
+    pid_t pgid = job->pid; // process group id
+    char cmd_name[256]; // command name
+    strcpy(cmd_name, job->command); //copy command name
+    ProcessState state = job->state; //stores the current state of process
 
     printf("%s\n", cmd_name);
 
     // Remove from background list as it is now in the foreground
     remove_process(pgid);
     
+    //gives control of terminal to the foreground job -> now input, interupt is for it
     tcsetpgrp(STDIN_FILENO, pgid);
 
     if (state == STOPPED) {
         if (kill(-pgid, SIGCONT) < 0) {
+            // Negative PID means send the signal to the entire process group, not just one process.
             perror("fg: kill (SIGCONT)");
             tcsetpgrp(STDIN_FILENO, shell_pgid);
             return;
         }
     }
     
+    //waits for the process to finish
     fg_wait(pgid, cmd_name);
+    
+    //back to shell
     tcsetpgrp(STDIN_FILENO, shell_pgid);
 }
 
@@ -110,7 +116,6 @@ void execute_bg(char **tokens) {
     }
 
     job->state = RUNNING;
+    //set the background job to running state
     printf("[%d] %s &\n", job->job_number, job->command);
 }
-
-// ############## LLM Generated Code Ends ################

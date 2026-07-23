@@ -1,7 +1,7 @@
 #include "headers.h"
 #include "prompt.h"
 #include <limits.h>
-// ############## LLM Generated Code Begins ##############
+
 void prompt(char *curr_path, const char *home_path)
 {
     char sysName[2048];
@@ -10,6 +10,7 @@ void prompt(char *curr_path, const char *home_path)
     
     // char *userName = getlogin();    this can fail sometimes
     gethostname(sysName, sizeof(sysName));
+    //get login name and system name
 
     char finalPath[4096];
     
@@ -17,14 +18,14 @@ void prompt(char *curr_path, const char *home_path)
     if (strncmp(curr_path, home_path, strlen(home_path)) == 0)
     {
         // Replace the home path with a tilde '~'
+        //print everything after the home directory
         snprintf(finalPath, sizeof(finalPath), "~%s", curr_path + strlen(home_path));
     }
     else
     {
-        strcpy(finalPath, curr_path);
+        strcpy(finalPath, curr_path); //else print the current path
     }
     
     printf("<%s@%s:%s> ", userName, sysName, finalPath);
     return;
 }
-// ############## LLM Generated Code Ends ################

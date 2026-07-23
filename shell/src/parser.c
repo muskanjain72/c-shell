@@ -1,4 +1,3 @@
-// ############## LLM Generated Code Begins ##############
 #include "headers.h"
 #include <ctype.h>
 
@@ -17,16 +16,19 @@ int tokenize(char *input, Parser *parser) {
         while (*current && isspace(*current)) {
             current++;
         }
+        //skip spaces
 
         if (*current == '\0') break;
+        //end of line character
 
         char *token_start = current;
         if (*current == '"') { // Quoted token
             token_start++; // Skip the opening quote
             current++;
             while (*current && *current != '"') {
-                current++;
+                current++; 
             }
+            //quote ends
 
             char* token = malloc(current - token_start + 1);
             strncpy(token, token_start, current - token_start);
@@ -57,6 +59,7 @@ int tokenize(char *input, Parser *parser) {
     }
 
     parser->tokens[parser->count] = NULL;
+    //return the total number of tokens
     return parser->count;
 }
 
@@ -151,6 +154,7 @@ int parse_atomic(Parser *p)
         p->pos = current_pos;
         break;
     }
+    //u dont need to return 0 since it may be part of the next group
     return 1;
 }
 
@@ -170,6 +174,7 @@ int parse_cmd_group(Parser *p)
 int parse_shell_cmd(Parser *p)
 {
     if (!parse_cmd_group(p)) return 0;
+    //starts with cmd group
 
     while (p->pos < p->count) {
         if (isMatch(p, ";")) {
@@ -202,9 +207,10 @@ int parse_command(char *input, Parser *parser)
 
     if (parser->pos != parser->count) {
         return 0;
-    }
+    }//if it ends, before the end then it is invalid
 
-    parser->pos = 0; // Reset for the execution phase.
+    //reset for the execution phase
+    parser->pos = 0;
     return 1;
 }
 
@@ -223,4 +229,3 @@ void free_tokens(Parser *parser)
         parser->tokens = NULL;
     }
 }
-// ############## LLM Generated Code Ends ################

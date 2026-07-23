@@ -1,5 +1,3 @@
-
-// ############## LLM Generated Code Begins ##############
 #include "headers.h"
 #include "ping.h"
 #include <stdio.h>
@@ -10,20 +8,23 @@
 void ping_process(pid_t pid, int signal_number)
 {
     int actual_signal = signal_number % 32;
-
+    //kill system call
+    //signal 0 is special ->it doesnt kill, stop or do anything to the process
+    //it just asks the kernel, whether this process exists and do i have the permission to send a signal to this process
     if (kill(pid, 0) == -1 && errno == ESRCH)
     {
-        printf("No such process found\n");
+        //no such process found
+        printf("ping: No such process found!\n");
         return;
     }
 
     if (kill(pid, actual_signal) == -1)
     {
-        perror("ping failed");
+        //other errors like permission denied
+        perror("ping");
     }
     else
     {
         printf("Sent signal %d to process with pid %d\n", signal_number, pid);
     }
 }
-// ############## LLM Generated Code Ends ################

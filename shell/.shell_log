@@ -1,15 +1,15 @@
-cat < file1.txt < file2.txt
-echo 'last output' > out1.txt > out2.txt
-hop .. > out.txt
-reveal -la
-reveal -a
-cd 
+hop muskan-jain
+hop muskan-jain/
+hop /home/muskan-jain
+hello
+cat meow.txt | ; meow
+cat meow.txt | meow; meow > meow.txt &
+echo hi ; echo bye
+echo test &
+cat meow.txt | meow
+> file.txt
+cat < file.txt > out.txt
 cd ..
-hop ..
-quit
-ls | ./test_pipeline
-sleep 2 &
-sleep 10 &
-activities
-ping 99999 9
-exit
+cd .
+cd . .
+cd /home

@@ -1,5 +1,4 @@
 
-// ############## LLM Generated Code Begins ##############
 
 #include "headers.h"
 #include "activities.h"
@@ -14,10 +13,12 @@ Process *head = NULL;
 
 static int job_counter = 1;
 
+//stores everything in a linked list type format
 static int cmp_process(const void *a, const void *b) {
     Process *pa = *(Process **)a;
     Process *pb = *(Process **)b;
     return strcmp(pa->command, pb->command);
+    //returns in the order of alphabetical order
 }
 
 void remove_process(pid_t pid) {
@@ -45,7 +46,7 @@ int add_process(pid_t pid, const char *cmd, ProcessState state) {
     strncpy(new_proc->command, cmd, 255);
     new_proc->command[255] = '\0';
     new_proc->state = state;
-    new_proc->next = head;
+    new_proc->next = head; //stores the most recent one as the head
     head = new_proc;
     return job_counter++;
 }
@@ -109,6 +110,7 @@ void kill_all_processes() {
     Process *curr = head;
     while (curr) {
         kill(-curr->pid, SIGKILL);
+        //sends kill signals to all the processs
         curr = curr->next;
     }
 }
@@ -127,6 +129,6 @@ Process* get_most_recent_job(void) {
         }
         curr = curr->next;
     }
+    //returns the one with highest job number
     return most_recent;
 }
-// ############## LLM Generated Code Ends ################
